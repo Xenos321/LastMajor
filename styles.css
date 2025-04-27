@@ -220,6 +220,7 @@ h4 {
 
 .hero-content {
     flex: 1;
+    padding-left: 50px;
 }
 
 .hero-content h2 {
