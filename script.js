@@ -26,6 +26,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const printAppointmentBtn = document.getElementById('print-appointment');
     const viewAppointmentsBtn = document.getElementById('view-appointments');
     
+    // Calendar instance variable
+    let calendar = null;
+
     // Sample data for doctors and time slots
     const doctorsData = {
         cardiology: [
@@ -41,6 +44,54 @@ document.addEventListener('DOMContentLoaded', function() {
             { id: 'doc-6', name: 'Dr. Jennifer Lee', availableDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] }
         ]
     };
+
+    // Helper function to find doctor by name
+    function findDoctorByName(name) {
+        for (const department in doctorsData) {
+            const doctor = doctorsData[department].find(doc => doc.name === name);
+            if (doctor) {
+                return doctor;
+            }
+        }
+        return null;
+    }
+
+    // Function to update calendar with doctor's available days
+    function updateCalendar(doctorName) {
+        if (calendar) {
+            calendar.destroy();
+        }
+
+        const doctor = findDoctorByName(doctorName);
+        if (!doctor) {
+            console.error("Doctor not found!");
+            return;
+        }
+
+        const allowedDays = doctor.availableDays;
+
+        // Generate list of available dates in next 14 days
+        const today = new Date();
+        const availableDates = [];
+
+        for (let i = 0; i <= 14; i++) {
+            const date = new Date(today);
+            date.setDate(today.getDate() + i);
+
+            const dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
+            if (allowedDays.includes(dayName)) {
+                availableDates.push(date.toISOString().split('T')[0]);
+            }
+        }
+
+        // Setup flatpickr
+        calendar = flatpickr(dateInput, {
+            dateFormat: "Y-m-d",
+            enable: availableDates,
+            minDate: "today",
+            maxDate: new Date().fp_incr(14)
+        });
+    }
     
     const timeSlots = [
         '09:00 AM', '09:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM',
@@ -206,6 +257,9 @@ document.addEventListener('DOMContentLoaded', function() {
     function enableDateInput() {
         if (doctorSelect.value) {
             dateInput.disabled = false;
+            // Update calendar with doctor's available days
+            const selectedDoctor = doctorSelect.options[doctorSelect.selectedIndex].text;
+            updateCalendar(selectedDoctor);
         } else {
             dateInput.disabled = true;
             timeSelect.disabled = true;
