@@ -36,16 +36,9 @@ document.addEventListener('DOMContentLoaded', function() {
             { id: 'doc-3', name: 'Dr. Michael Chen', availableDays: ['Monday', 'Tuesday', 'Thursday'] },
             { id: 'doc-4', name: 'Dr. Emily Wilson', availableDays: ['Wednesday', 'Friday', 'Saturday'] }
         ],
-        orthopedics: [
-            { id: 'doc-5', name: 'Dr. James Brown', availableDays: ['Monday', 'Wednesday', 'Friday'] },
-            { id: 'doc-6', name: 'Dr. Patricia Davis', availableDays: ['Tuesday', 'Thursday', 'Saturday'] }
-        ],
-        pediatrics: [
-            { id: 'doc-7', name: 'Dr. Emily Rodriguez', availableDays: ['Monday', 'Wednesday', 'Friday'] },
-            { id: 'doc-8', name: 'Dr. David Miller', availableDays: ['Tuesday', 'Thursday', 'Saturday'] }
-        ],
         general: [
-            { id: 'doc-9', name: 'Dr. Jennifer Lee', availableDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] }
+            { id: 'doc-5', name: 'Dr. James Brown', availableDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] },
+            { id: 'doc-6', name: 'Dr. Jennifer Lee', availableDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] }
         ]
     };
     
