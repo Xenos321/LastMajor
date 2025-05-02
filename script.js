@@ -37,14 +37,14 @@ document.addEventListener('DOMContentLoaded', function() {
         ],
         neurology: [
             { id: 'doc-3', name: 'Dr. Michael Chen', availableDays: ['Monday', 'Tuesday', 'Thursday'] },
-            { id: 'doc-4', name: 'Dr. Emily Wilson', availableDays: ['Wednesday', 'Friday', 'Saturday'] }
+            { id: 'doc-4', name: 'Dr. Jennifer Lee', availableDays: ['Wednesday', 'Friday', 'Saturday'] }
         ],
         general: [
             { id: 'doc-5', name: 'Dr. James Brown', availableDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] },
-            { id: 'doc-6', name: 'Dr. Jennifer Lee', availableDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] }
+            { id: 'doc-6', name: 'Dr. Emily Rodriguez', availableDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] }
         ]
     };
-
+    
     // Helper function to find doctor by name
     function findDoctorByName(name) {
         for (const department in doctorsData) {

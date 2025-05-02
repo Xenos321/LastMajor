@@ -802,6 +802,3 @@ footer {
 .footer-links a:hover {
     color: var(--secondary-color);
 }
-
-/* Responsive Styles */
-@media (max-width: 
