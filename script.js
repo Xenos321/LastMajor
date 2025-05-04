@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const departmentSelect = document.getElementById('department');
     const doctorSelect = document.getElementById('doctor');
     const dateInput = document.getElementById('date');
-    const timeSelect = document.getElementById('time');
     const nameInput = document.getElementById('name');
     const emailInput = document.getElementById('email');
     const phoneInput = document.getElementById('phone');
@@ -93,11 +92,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    const timeSlots = [
-        '09:00 AM', '09:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM',
-        '01:00 PM', '01:30 PM', '02:00 PM', '02:30 PM', '03:00 PM', '03:30 PM', '04:00 PM'
-    ];
-    
     // Sample appointments data
     let appointments = [
         {
@@ -105,8 +99,9 @@ document.addEventListener('DOMContentLoaded', function() {
             department: 'Cardiology',
             doctor: 'Dr. Sarah Johnson',
             date: '2023-06-15',
-            time: '10:30 AM',
             patientName: 'John Doe',
+            email: 'john@example.com',
+            phone: '123-456-7890',
             status: 'upcoming'
         },
         {
@@ -114,8 +109,9 @@ document.addEventListener('DOMContentLoaded', function() {
             department: 'Neurology',
             doctor: 'Dr. Michael Chen',
             date: '2023-05-20',
-            time: '02:00 PM',
             patientName: 'John Doe',
+            email: 'john@example.com',
+            phone: '123-456-7890',
             status: 'completed'
         },
         {
@@ -123,8 +119,9 @@ document.addEventListener('DOMContentLoaded', function() {
             department: 'General Medicine',
             doctor: 'Dr. Jennifer Lee',
             date: '2023-06-01',
-            time: '11:00 AM',
             patientName: 'John Doe',
+            email: 'john@example.com',
+            phone: '123-456-7890',
             status: 'cancelled'
         }
     ];
@@ -146,80 +143,81 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function setupEventListeners() {
         // Navigation links
-        navLinks.forEach(link => {
+        document.querySelectorAll('nav a').forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
                 const sectionId = this.id.replace('-link', '-section');
                 showSection(sectionId);
                 
                 // Update active nav link
-                navLinks.forEach(navLink => navLink.classList.remove('active'));
+                document.querySelectorAll('nav a').forEach(navLink => {
+                    navLink.classList.remove('active');
+                });
                 this.classList.add('active');
             });
         });
         
         // Auth buttons
-        loginBtn.addEventListener('click', () => loginModal.classList.add('active'));
-        registerBtn.addEventListener('click', () => registerModal.classList.add('active'));
+        document.getElementById('login-btn')?.addEventListener('click', () => {
+            document.getElementById('login-modal').classList.add('active');
+        });
+        
+        document.getElementById('register-btn')?.addEventListener('click', () => {
+            document.getElementById('register-modal').classList.add('active');
+        });
         
         // Close modals
-        closeModals.forEach(btn => {
+        document.querySelectorAll('.close-modal').forEach(btn => {
             btn.addEventListener('click', () => {
-                loginModal.classList.remove('active');
-                registerModal.classList.remove('active');
-                confirmationModal.classList.remove('active');
+                document.getElementById('login-modal').classList.remove('active');
+                document.getElementById('register-modal').classList.remove('active');
+                document.getElementById('confirmation-modal').classList.remove('active');
             });
         });
         
         // Modal switches
-        registerFromLogin.addEventListener('click', (e) => {
+        document.getElementById('register-from-login')?.addEventListener('click', (e) => {
             e.preventDefault();
-            loginModal.classList.remove('active');
-            registerModal.classList.add('active');
+            document.getElementById('login-modal').classList.remove('active');
+            document.getElementById('register-modal').classList.add('active');
         });
         
-        loginFromRegister.addEventListener('click', (e) => {
+        document.getElementById('login-from-register')?.addEventListener('click', (e) => {
             e.preventDefault();
-            registerModal.classList.remove('active');
-            loginModal.classList.add('active');
+            document.getElementById('register-modal').classList.remove('active');
+            document.getElementById('login-modal').classList.add('active');
         });
         
         // Book appointment buttons
-        heroBookBtn.addEventListener('click', () => {
+        document.getElementById('hero-book-btn')?.addEventListener('click', () => {
             showSection('book-section');
-            navLinks.forEach(navLink => navLink.classList.remove('active'));
+            document.querySelectorAll('nav a').forEach(navLink => navLink.classList.remove('active'));
             document.getElementById('book-link').classList.add('active');
         });
         
-        bookFromViewBtn.addEventListener('click', () => {
+        document.getElementById('book-from-view')?.addEventListener('click', () => {
             showSection('book-section');
-            navLinks.forEach(navLink => navLink.classList.remove('active'));
+            document.querySelectorAll('nav a').forEach(navLink => navLink.classList.remove('active'));
             document.getElementById('book-link').classList.add('active');
         });
+
+        departmentSelect?.addEventListener('change', populateDoctors);
+        doctorSelect?.addEventListener('change', enableDateInput);
         
-        // Booking form interactions
-        departmentSelect.addEventListener('change', populateDoctors);
-        doctorSelect.addEventListener('change', enableDateInput);
-        dateInput.addEventListener('change', populateTimeSlots);
+        bookingForm?.addEventListener('submit', handleBookingSubmit);
         
-        // Booking form submission
-        bookingForm.addEventListener('submit', handleBookingSubmit);
-        
-        // Form inputs for preview
-        [departmentSelect, doctorSelect, dateInput, timeSelect, nameInput].forEach(input => {
-            input.addEventListener('change', updatePreview);
+        [departmentSelect, doctorSelect, dateInput, nameInput, emailInput, phoneInput].forEach(input => {
+            input?.addEventListener('change', updatePreview);
         });
-        
-        // Appointments filter
-        filterStatus.addEventListener('change', renderAppointments);
-        refreshAppointments.addEventListener('click', renderAppointments);
-        
-        // Confirmation modal buttons
-        printAppointmentBtn.addEventListener('click', () => window.print());
-        viewAppointmentsBtn.addEventListener('click', () => {
+
+        filterStatus?.addEventListener('change', renderAppointments);
+        refreshAppointments?.addEventListener('click', renderAppointments);
+
+        printAppointmentBtn?.addEventListener('click', () => window.print());
+        viewAppointmentsBtn?.addEventListener('click', () => {
             confirmationModal.classList.remove('active');
             showSection('view-section');
-            navLinks.forEach(navLink => navLink.classList.remove('active'));
+            document.querySelectorAll('nav a').forEach(navLink => navLink.classList.remove('active'));
             document.getElementById('view-link').classList.add('active');
         });
     }
@@ -248,7 +246,6 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             doctorSelect.disabled = true;
             dateInput.disabled = true;
-            timeSelect.disabled = true;
         }
         
         updatePreview();
@@ -262,26 +259,6 @@ document.addEventListener('DOMContentLoaded', function() {
             updateCalendar(selectedDoctor);
         } else {
             dateInput.disabled = true;
-            timeSelect.disabled = true;
-        }
-        
-        updatePreview();
-    }
-    
-    function populateTimeSlots() {
-        if (dateInput.value) {
-            timeSelect.disabled = false;
-            timeSelect.innerHTML = '<option value="">Select Time Slot</option>';
-            
-            // In a real app, we would check doctor's availability here
-            timeSlots.forEach(slot => {
-                const option = document.createElement('option');
-                option.value = slot;
-                option.textContent = slot;
-                timeSelect.appendChild(option);
-            });
-        } else {
-            timeSelect.disabled = true;
         }
         
         updatePreview();
@@ -293,12 +270,20 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('preview-date').textContent = dateInput.value ? new Date(dateInput.value).toLocaleDateString('en-US', { 
             weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
         }) : 'Not selected';
-        document.getElementById('preview-time').textContent = timeSelect.options[timeSelect.selectedIndex].text || 'Not selected';
         document.getElementById('preview-name').textContent = nameInput.value || 'Not provided';
+        document.getElementById('preview-email').textContent = emailInput.value || 'Not provided';
+        document.getElementById('preview-phone').textContent = phoneInput.value || 'Not provided';
     }
     
     function handleBookingSubmit(e) {
         e.preventDefault();
+        
+        // Validate required fields
+        if (!departmentSelect.value || !doctorSelect.value || !dateInput.value || 
+            !nameInput.value || !emailInput.value || !phoneInput.value) {
+            alert('Please fill in all required fields');
+            return;
+        }
         
         // Create new appointment
         const newAppointment = {
@@ -306,7 +291,6 @@ document.addEventListener('DOMContentLoaded', function() {
             department: departmentSelect.options[departmentSelect.selectedIndex].text,
             doctor: doctorSelect.options[doctorSelect.selectedIndex].text,
             date: dateInput.value,
-            time: timeSelect.value,
             patientName: nameInput.value,
             email: emailInput.value,
             phone: phoneInput.value,
@@ -322,7 +306,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('confirm-date').textContent = new Date(newAppointment.date).toLocaleDateString('en-US', { 
             weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
         });
-        document.getElementById('confirm-time').textContent = newAppointment.time;
         
         // Show confirmation modal
         confirmationModal.classList.add('active');
@@ -331,7 +314,6 @@ document.addEventListener('DOMContentLoaded', function() {
         bookingForm.reset();
         doctorSelect.disabled = true;
         dateInput.disabled = true;
-        timeSelect.disabled = true;
         
         // Update preview
         updatePreview();
@@ -362,9 +344,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             `;
             
-            document.getElementById('book-from-view').addEventListener('click', () => {
+            document.getElementById('book-from-view')?.addEventListener('click', () => {
                 showSection('book-section');
-                navLinks.forEach(navLink => navLink.classList.remove('active'));
+                document.querySelectorAll('nav a').forEach(navLink => navLink.classList.remove('active'));
                 document.getElementById('book-link').classList.add('active');
             });
         } else {
@@ -381,7 +363,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 appointmentCard.innerHTML = `
                     <div class="appointment-info">
                         <h4>${appointment.department} - ${appointment.doctor}</h4>
-                        <p>${formattedDate} at ${appointment.time}</p>
+                        <p>${formattedDate}</p>
+                        <p>Patient: ${appointment.patientName}</p>
                         <span class="appointment-status status-${appointment.status}">
                             ${appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
                         </span>
@@ -440,17 +423,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p><strong>Department:</strong> ${appointment.department}</p>
                     <p><strong>Doctor:</strong> ${appointment.doctor}</p>
                     <p><strong>Date:</strong> ${formattedDate}</p>
-                    <p><strong>Time:</strong> ${appointment.time}</p>
                     <p><strong>Patient Name:</strong> ${appointment.patientName}</p>
-                    ${appointment.email ? `<p><strong>Email:</strong> ${appointment.email}</p>` : ''}
-                    ${appointment.phone ? `<p><strong>Phone:</strong> ${appointment.phone}</p>` : ''}
+                    <p><strong>Email:</strong> ${appointment.email}</p>
+                    <p><strong>Phone:</strong> ${appointment.phone}</p>
                     <p><strong>Status:</strong> <span class="status-${appointment.status}">
                         ${appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
                     </span></p>
                 </div>
             `;
             
-            // Create a modal for details (or reuse an existing one)
+            // Create a modal for details
             const detailsModal = document.createElement('div');
             detailsModal.className = 'modal active';
             detailsModal.innerHTML = `
